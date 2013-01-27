@@ -94,7 +94,9 @@ module Guard
         def run_jasmine_spec(file, options)
           suite = jasmine_suite(file, options)
           Formatter.info("Run Jasmine suite at #{ suite }")
-          IO.popen("#{ phantomjs_command(options) } \"#{ suite }\" #{ options[:timeout] * 1000 } #{ options[:specdoc] } #{ options[:focus] } #{ options[:console] } #{ options[:errors] }", 'r:UTF-8')
+          cmd = "#{ phantomjs_command(options) } \"#{ suite }\" #{ options[:timeout] * 1000 } #{ options[:specdoc] } #{ options[:focus] } #{ options[:console] } #{ options[:errors] }"
+          Formatter.info(cmd)
+          IO.popen(cmd, 'r:UTF-8')
         end
 
         # Get the PhantomJS binary and script to execute.
@@ -104,6 +106,7 @@ module Guard
         # @return [String] the command
         #
         def phantomjs_command(options)
+          #  --remote-debugger-port=9000 --remote-debugger-autorun=yes
           options[:phantomjs_bin] + ' ' + phantomjs_script
         end
 
